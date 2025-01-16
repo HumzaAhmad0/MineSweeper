@@ -15,6 +15,12 @@ public abstract class Tile {
         }
     }
 
+    public void testFlip(){
+        if(!isFlagged){
+            isRevealed = false;
+        }
+    }
+
     public void flag(){
         if (!isRevealed){
             isFlagged = !isFlagged;

@@ -8,6 +8,13 @@ public class MineTile extends Tile {
 
     @Override
     public String toString() {
-        return isRevealed ? "X":"#" ;
+
+        if (isRevealed) {
+            return "X";
+        } else if (isFlagged) {
+            return "F";
+        } else {
+            return "#";
+        }
     }
 }

@@ -4,9 +4,7 @@ import org.minesweeper.tiles.*;
 import java.util.Random;
 
 
-public class gameBoard {
-
-
+public class GameBoard {
     private Tile[][] board;
     private int rows;
     private int cols;
@@ -28,7 +26,7 @@ public class gameBoard {
         return totalMines;
     }
 
-    public gameBoard(int rows, int cols, int totalMines) {
+    public GameBoard(int rows, int cols, int totalMines) {
         this.rows = rows;
         this.cols = cols;
         this.totalMines = totalMines;

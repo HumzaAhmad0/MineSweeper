@@ -11,15 +11,20 @@ public class GameManager {
     ConsoleAsciiRenderer consoleAsciiRenderer = new ConsoleAsciiRenderer();
 
     public GameManager(int xCord, int yCord, boolean gameOver){
-        boolean validResponse;
+        boolean validResponse = true;
 
         this.xCord = xCord;
         this.yCord = yCord;
         this.gameOver = gameOver;
         Scanner sc = new Scanner(System.in);
+        ErrorHandling errorHandling = new ErrorHandling();
+        String difficultySelected;
 
         consoleAsciiRenderer.selectDifficulty();
-        String difficultySelected = sc.next().toLowerCase();
+        do {
+            difficultySelected = sc.next().toLowerCase();
+            validResponse =  errorHandling.difficultyCheck(difficultySelected);
+        }while (!validResponse);
         consoleAsciiRenderer.displayDifficultySelected(difficultySelected);
 
         int mineNum = switch (difficultySelected) {
@@ -30,9 +35,14 @@ public class GameManager {
         };
 
         //need to add a while loop to check for errors in user responses
+        String boardSizeSelected;
         consoleAsciiRenderer.selectSize();
-        String boardSizeSelected = sc.next().toLowerCase();
-        System.out.println(boardSizeSelected);
+        do {
+            boardSizeSelected = sc.next().toLowerCase();
+            validResponse =  errorHandling.sizeCheck(boardSizeSelected);
+        }while (!validResponse);
+        consoleAsciiRenderer.displaySizeSelected(boardSizeSelected);
+
         int rows = 0;
         int cols = switch (boardSizeSelected) {
             case "small" -> {

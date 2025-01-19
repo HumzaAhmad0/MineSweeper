@@ -7,6 +7,15 @@ import java.util.Scanner;
 public class GameManager {
     int xCord;
     int yCord;
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
+
     boolean gameOver;
     ConsoleAsciiRenderer consoleAsciiRenderer = new ConsoleAsciiRenderer();
 
@@ -34,7 +43,6 @@ public class GameManager {
             default -> 0;
         };
 
-        //need to add a while loop to check for errors in user responses
         String boardSizeSelected;
         consoleAsciiRenderer.selectSize();
         do {
@@ -66,10 +74,29 @@ public class GameManager {
         int turnNumber = 0;
         int firstMoveX;
         int firstMoveY;
-
+        int numOfSafeTiles = (rows*cols) - mineNum;
+        String response;
         while(!gameOver){
             //maybe make this into user turn method or class?
             //need to add a while loop to check for errors in user responses
+            if (gameOver) {
+                consoleAsciiRenderer.gameOverFail();
+                do {
+                    response = sc.next().toLowerCase();
+                    validResponse =  errorHandling.gameOverResponse(response);
+                }
+                while (!validResponse);
+
+                if (response.equalsIgnoreCase("quit")){
+                    ConsoleAsciiRenderer.endScreen();
+                    System.exit(0);
+                    //i need to quit the console or something here
+                } else if (response.equalsIgnoreCase("retry")) {
+                    // need to restart from the start of the class basically
+                }
+                break;
+            }
+
             String userChoice;
             if(turnNumber == 0){
                 consoleAsciiRenderer.firstMoveQuestion();
@@ -89,10 +116,11 @@ public class GameManager {
                         if(turnNumber == 0){
                             firstMoveX = xCord; firstMoveY = yCord;
                             gameBoard.makeActualBoard(firstMoveX,firstMoveY);
-                            //gameBoard = new GameBoard(rows, cols, mineNum, firstMoveX, firstMoveY);
+                            gameBoard = new GameBoard(rows, cols, mineNum, firstMoveX, firstMoveY, this);
 
                         }
-                        gameBoard.getBoard()[xCord][yCord].reveal();
+                        //gameBoard.getBoard()[xCord][yCord].reveal();
+                        gameBoard.revealTile(xCord, yCord);
                         System.out.println(xCord + ", " + yCord);
                         turnNumber++;
                         break;
@@ -105,13 +133,12 @@ public class GameManager {
                     case "quit":
                         System.out.println("Game Ended");
                         gameOver = true;
+                        System.exit(0);
                         break;
                 }
             }
             System.out.println(userChoice);
             ConsoleAsciiRenderer.renderBoard(gameBoard, mineNum,turnNumber, rows, cols);
-
-
         }
 
     }

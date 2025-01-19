@@ -1,6 +1,22 @@
 package org.minesweeper.tiles;
 
 public abstract class Tile {
+    public boolean isRevealed() {
+        return isRevealed;
+    }
+
+    public void setRevealed(boolean revealed) {
+        isRevealed = revealed;
+    }
+
+    public boolean isFlagged() {
+        return isFlagged;
+    }
+
+    public void setFlagged(boolean flagged) {
+        isFlagged = flagged;
+    }
+
     protected boolean isRevealed;
     protected boolean isFlagged;
 

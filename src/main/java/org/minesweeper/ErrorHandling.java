@@ -5,6 +5,7 @@ import org.minesweeper.render.ConsoleAsciiRenderer;
 public class ErrorHandling {
     private String difficultyChoice;
     private String boardSizeSelected;
+    private String response;
     private String boardSize;
     ConsoleAsciiRenderer consoleAsciiRenderer = new ConsoleAsciiRenderer();
 
@@ -32,6 +33,20 @@ public class ErrorHandling {
             return true;
         }else{
             ConsoleAsciiRenderer.sizeWrongTxtError(boardSizeSelected);
+            return false;
+        }
+    }
+
+    public boolean gameOverResponse(String response){
+        this.response = response;
+
+        if (response.matches(".*\\d.*")){
+            ConsoleAsciiRenderer.gameOverNumInputError();
+            return false;
+        } else if (response.equalsIgnoreCase("quit") || response.equalsIgnoreCase("retry")) {
+            return true;
+        }else{
+            ConsoleAsciiRenderer.gameOverWrongTextInputError();
             return false;
         }
     }

@@ -8,16 +8,15 @@ public class ConsoleAsciiRenderer {
     public static void renderBoard(GameBoard gameBoard, int rows, int cols) {
         Tile[][] board = gameBoard.getBoard();
 
-        // Print column indices at the top
-        System.out.print("   ");  // Indentation to align with row indices
+        System.out.print("   ");
         for (int col = 0; col < cols; col++) {
             System.out.print(col + " ");
         }
         System.out.println();
 
-        // Print the board with row indices
+
         for (int row = 0; row < rows; row++) {
-            System.out.print(row + "  ");  // Row index followed by spacing
+            System.out.print(row + "  ");
             for (int col = 0; col < cols; col++) {
                 System.out.print(board[row][col].toString() + " ");
             }
@@ -27,23 +26,23 @@ public class ConsoleAsciiRenderer {
     public static void renderBoard(GameBoard gameBoard, int mineNum, int turnNum, int rows, int cols) {
         Tile[][] board = gameBoard.getBoard();
 
-        // Print column indices at the top
-        System.out.print("   ");  // Indentation to align with row indices
+
+        System.out.print("   ");
         for (int col = 0; col < cols; col++) {
             System.out.print(col + " ");
         }
         System.out.println();
 
-        // Print the board with row indices
+
         for (int row = 0; row < rows; row++) {
-            System.out.print(row + "  ");  // Row index followed by spacing
+            System.out.print(row + "  ");
             for (int col = 0; col < cols; col++) {
                 System.out.print(board[row][col].toString() + " ");
             }
             System.out.println();
         }
 
-        // Display additional information
+
         System.out.println("\nTurn Number: " + turnNum);
         System.out.println("Number of Mines: " + mineNum);
     }
@@ -54,6 +53,39 @@ public class ConsoleAsciiRenderer {
                     reveal
                     quit
                     """);
+    }
+
+    public void gameOverFail(){
+        System.out.println("""
+                You have selected a Mine Tile and lost
+                
+                Quit
+                Retry
+                """);
+    }
+
+    public static void endScreen(){
+        System.out.println("Thanks for playing");
+        
+    }
+
+    public static void gameOverNumInputError(){
+        System.out.println("""
+                Please select a valid response
+                
+                Quit
+                Retry
+                NO NUMBERS ALLOWED
+                """);
+    }
+    public static void gameOverWrongTextInputError(){
+        System.out.println("""
+                Please select a valid response
+                
+                Quit
+                Retry
+                (quit or retry are the only acceptable choices)
+                """);
     }
 
     public void moveQuestion(){
@@ -73,14 +105,6 @@ public class ConsoleAsciiRenderer {
                     Hard: 8 mines
                     """);
     }
-//    public void invalidDifficulty(String difficultyChoice){
-//        System.out.println(difficultyChoice+" is not a valid option\n" + """
-//                Please re-enter a valid option
-//                Easy: 2 Mines
-//                Medium: 5 Mines
-//                Hard: 8 mines
-//                """);
-//    }
 
     public static void difficultyNumInputError(String difficultyChoice){
         System.out.println();

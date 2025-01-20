@@ -1,4 +1,5 @@
 package org.minesweeper;
+
 import javax.swing.*;
 
 public class GameInitializer  {

@@ -140,8 +140,8 @@ public class Game {
         int baseMines = rows * cols / 8;
         switch (difficulty) {
             case 2:
-                return baseMines * 2;
-//                return 2;
+                //return baseMines * 2;
+                return 2;
             case 3:
                 return baseMines * 3;
             default:

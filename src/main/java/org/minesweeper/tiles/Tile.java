@@ -1,6 +1,6 @@
 package org.minesweeper.tiles;
-import org.minesweeper.Board;
 
+import org.minesweeper.Board;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -13,6 +13,7 @@ public class Tile extends JButton {
     private boolean revealed;
     private boolean flagged;
     private Board board;
+    private Color defaultBackground;
 
     public Tile(int row, int col, Board board) {
         this.row = row;
@@ -25,6 +26,8 @@ public class Tile extends JButton {
         setFont(new Font("Arial", Font.BOLD, 30));
         setPreferredSize(new Dimension(70, 70));
         setMargin(new Insets(0, 0, 0, 0));
+
+        defaultBackground = getBackground();
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -39,7 +42,23 @@ public class Tile extends JButton {
                     toggleFlag();
                 }
             }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                if (!revealed && !flagged) { // Apply dimming effect only for unrevealed and unflagged tiles
+                    setBackground(defaultBackground.darker()); // Dim the background
+                }
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                if (!revealed && !flagged) { // Reset only if the tile is still unrevealed and unflagged
+                    setBackground(defaultBackground); // Reset to the default color
+                }
+            }
         });
+
+
     }
 
     public boolean isMine() {
@@ -58,6 +77,7 @@ public class Tile extends JButton {
         if (!revealed && !flagged) { // Only reveal if not flagged
             revealed = true;
             setEnabled(false);
+            setBackground(defaultBackground);
 
             if (isMine && showMine) {
                 setText("X");
@@ -69,6 +89,7 @@ public class Tile extends JButton {
         if (!revealed) {
             flagged = !flagged;
             setText(flagged ? "F" : "");
+            setBackground(defaultBackground);
         }
     }
 

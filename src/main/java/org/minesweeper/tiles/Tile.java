@@ -45,15 +45,15 @@ public class Tile extends JButton {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                if (!revealed && !flagged) { // Apply dimming effect only for unrevealed and unflagged tiles
-                    setBackground(defaultBackground.darker()); // Dim the background
+                if (!revealed && !flagged) {
+                    setBackground(defaultBackground.darker());
                 }
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                if (!revealed && !flagged) { // Reset only if the tile is still unrevealed and unflagged
-                    setBackground(defaultBackground); // Reset to the default color
+                if (!revealed && !flagged) {
+                    setBackground(defaultBackground);
                 }
             }
         });

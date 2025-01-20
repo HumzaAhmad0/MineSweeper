@@ -11,6 +11,7 @@ public class Game {
     private JLabel statusLabel;
     private JLabel timerLabel;
     private JButton retryButton;
+    private JButton retrySameButton;
     private JButton saveScoreButton;
 
     public boolean isGameOver() {
@@ -45,16 +46,21 @@ public class Game {
         timerLabel.setHorizontalAlignment(SwingConstants.LEFT);
         timerLabel.setFont(new Font("Arial", Font.BOLD, 20));
 
-        retryButton = new JButton("Retry");
+        retryButton = new JButton("Main Menu");
         retryButton.setVisible(false);
         retryButton.addActionListener(this::onRetry);
 
+        retrySameButton = new JButton("Retry Same Settings"); // New button
+        retrySameButton.setVisible(false);
+        retrySameButton.addActionListener(this::onRetrySame);
+
         saveScoreButton = new JButton("Save Score");
-        saveScoreButton.setVisible(false); // Initially hidden
+        saveScoreButton.setVisible(false);
         saveScoreButton.addActionListener(this::onSaveScore);
 
         JPanel buttonPanel = new JPanel(new FlowLayout());
         buttonPanel.add(retryButton);
+        buttonPanel.add(retrySameButton);
         buttonPanel.add(saveScoreButton);
 
         topPanel.add(timerLabel, BorderLayout.WEST);
@@ -95,6 +101,7 @@ public class Game {
         board.revealMines();
         statusLabel.setText(won ? "You Win!" : "Game Over!");
         retryButton.setVisible(true);
+        retrySameButton.setVisible(true);
 
         if (won) {
             saveScoreButton.setVisible(true);
@@ -108,12 +115,18 @@ public class Game {
         board.revealMines();
         statusLabel.setText(message);
         retryButton.setVisible(true);
+        retrySameButton.setVisible(true);
         saveScoreButton.setVisible(false); // Always hidden if the player loses
     }
 
     private void onRetry(ActionEvent e) {
         gameFrame.dispose();
         new MainMenu();
+    }
+
+    private void onRetrySame(ActionEvent e) {
+        gameFrame.dispose();
+        new Game(rows, cols, difficulty); // Restart the game with the same settings
     }
 
     private void onSaveScore(ActionEvent e) {
@@ -140,7 +153,7 @@ public class Game {
         int baseMines = rows * cols / 8;
         switch (difficulty) {
             case 2:
-                //return baseMines * 2;
+//                return baseMines * 2;
                 return 2;
             case 3:
                 return baseMines * 3;
@@ -150,15 +163,10 @@ public class Game {
     }
 
     private int getInitialTime(int difficulty) {
-        switch (difficulty) {
-            case 1:
-                return 100; // Easy
-            case 2:
-                return 50;  // Medium
-            case 3:
-                return 25;  // Hard
-            default:
-                return 100;
-        }
+        return switch (difficulty) {
+            case 2 -> 50;
+            case 3 -> 5;
+            default -> 100;
+        };
     }
 }

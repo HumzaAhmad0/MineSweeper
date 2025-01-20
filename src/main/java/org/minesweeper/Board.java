@@ -117,7 +117,6 @@ public class Board {
         if (tile.isMine()) {
             tile.setText("X");
             tile.setBackground(Color.RED);
-//            tile.setForeground(Color.BLACK);
             game.gameOver(false);
         } else {
             tilesClicked++;

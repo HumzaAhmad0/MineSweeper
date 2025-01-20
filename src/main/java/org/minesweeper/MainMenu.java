@@ -60,7 +60,6 @@ public class MainMenu {
         leaderboardPanel.add(btnLeaderboard8x8);
         leaderboardPanel.add(btnLeaderboard10x10);
 
-        // Add panels to the main frame
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.add(gridPanel);
@@ -76,28 +75,28 @@ public class MainMenu {
         this.cols = 8;
         this.difficulty = 1;
 
-        // Explicitly set initial selections
+
         selectedGridButton = btn8x8;
         selectedDifficultyButton = btnDifficulty1;
         setSelectedButton(btn8x8, true); // Default grid size is 8x8
         setSelectedButton(btnDifficulty1, true); // Default difficulty is 1
 
-        // Set actions for grid size buttons
+
         btn6x6.addActionListener(e -> selectGridSize(btn6x6, 6, 6));
         btn8x8.addActionListener(e -> selectGridSize(btn8x8, 8, 8));
         btn10x10.addActionListener(e -> selectGridSize(btn10x10, 10, 10));
 
-        // Set actions for difficulty buttons
+
         btnDifficulty1.addActionListener(e -> selectDifficulty(btnDifficulty1, 1));
         btnDifficulty2.addActionListener(e -> selectDifficulty(btnDifficulty2, 2));
         btnDifficulty3.addActionListener(e -> selectDifficulty(btnDifficulty3, 3));
 
-        // Set actions for leaderboard buttons
+
         btnLeaderboard6x6.addActionListener(e -> Leaderboard.displayLeaderboard(6, 6, difficulty));
         btnLeaderboard8x8.addActionListener(e -> Leaderboard.displayLeaderboard(8, 8, difficulty));
         btnLeaderboard10x10.addActionListener(e -> Leaderboard.displayLeaderboard(10, 10, difficulty));
 
-        // Confirm button action
+
         btnConfirm.addActionListener(e -> startGame());
     }
 
@@ -110,7 +109,7 @@ public class MainMenu {
     private void selectGridSize(JButton button, int rows, int cols) {
         setSelectedButton(selectedGridButton, false); // Deselect previous button
         setSelectedButton(button, true); // Select new button
-        selectedGridButton = button; // Update tracking
+        selectedGridButton = button;
         this.rows = rows;
         this.cols = cols;
         System.out.println("Grid size set to: " + rows + "x" + cols);
@@ -119,7 +118,7 @@ public class MainMenu {
     private void selectDifficulty(JButton button, int difficulty) {
         setSelectedButton(selectedDifficultyButton, false); // Deselect previous button
         setSelectedButton(button, true); // Select new button
-        selectedDifficultyButton = button; // Update tracking
+        selectedDifficultyButton = button;
         this.difficulty = difficulty;
         System.out.println("Selected Difficulty: " + difficulty);
     }
@@ -127,11 +126,11 @@ public class MainMenu {
     private void setSelectedButton(JButton button, boolean isSelected) {
         if (button != null) {
             if (isSelected) {
-                button.setBackground(Color.getHSBColor(12,12,12)); // Selected color
+                button.setBackground(Color.getHSBColor(12,12,12));
                 button.setOpaque(true);
                 button.setBorderPainted(false);
             } else {
-                button.setBackground(UIManager.getColor("Button.background")); // Default color
+                button.setBackground(UIManager.getColor("Button.background"));
                 button.setOpaque(true);
                 button.setBorderPainted(true);
             }

@@ -9,6 +9,23 @@ import java.util.Random;
 public class Board {
     private int rows;
     private int cols;
+
+    public int getCols() {
+        return cols;
+    }
+
+    public void setCols(int cols) {
+        this.cols = cols;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public void setRows(int rows) {
+        this.rows = rows;
+    }
+
     private int mineCount;
     private Tile[][] tiles;
     private ArrayList<Tile> mines;
@@ -18,6 +35,7 @@ public class Board {
     public Game getGame() {
         return game;
     }
+
 
     public void setGame(Game game) {
         this.game = game;

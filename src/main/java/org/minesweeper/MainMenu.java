@@ -7,8 +7,16 @@ public class MainMenu {
     private JFrame mainMenuFrame;
     private JButton btn6x6, btn8x8, btn10x10;
     private JButton btnDifficulty1, btnDifficulty2, btnDifficulty3;
+    private JButton btnLeaderboard6x6, btnLeaderboard8x8, btnLeaderboard10x10;
     private JButton btnConfirm;
-    private int rows, cols, difficulty;
+    private int rows;
+    private int cols;
+
+    public int getDifficulty() {
+        return difficulty;
+    }
+
+    private int difficulty;
 
     public MainMenu() {
         //making the window and the buttons which are displayed to the user
@@ -44,11 +52,21 @@ public class MainMenu {
         btnConfirm = createButton("Confirm");
         confirmPanel.add(btnConfirm);
 
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.Y_AXIS));
-        bottomPanel.add(difficultyPanel);
-        bottomPanel.add(confirmPanel);
-        mainMenuFrame.add(bottomPanel, BorderLayout.SOUTH);
+        JPanel leaderboardPanel = new JPanel(new FlowLayout());
+        btnLeaderboard6x6 = createButton("6x6 Ranks");
+        btnLeaderboard8x8 = createButton("8x8 Ranks");
+        btnLeaderboard10x10 = createButton("10x10 Ranks");
+        leaderboardPanel.add(btnLeaderboard6x6);
+        leaderboardPanel.add(btnLeaderboard8x8);
+        leaderboardPanel.add(btnLeaderboard10x10);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        centerPanel.add(gridPanel);
+        centerPanel.add(difficultyPanel);
+        centerPanel.add(leaderboardPanel);
+        centerPanel.add(btnConfirm);
+        mainMenuFrame.add(centerPanel, BorderLayout.CENTER);
 
         mainMenuFrame.setVisible(true);
 
@@ -65,6 +83,13 @@ public class MainMenu {
         btnDifficulty1.addActionListener(e -> updateDifficulty(1));
         btnDifficulty2.addActionListener(e -> updateDifficulty(2));
         btnDifficulty3.addActionListener(e -> updateDifficulty(3));
+
+
+        //view rankings (need to select difficulty first )
+        btnLeaderboard6x6.addActionListener(e -> Leaderboard.displayLeaderboard(6, 6, difficulty));
+        btnLeaderboard8x8.addActionListener(e -> Leaderboard.displayLeaderboard(8, 8, difficulty));
+        btnLeaderboard10x10.addActionListener(e -> Leaderboard.displayLeaderboard(10, 10, difficulty));
+
 
         btnConfirm.addActionListener(e -> startGame());
     }

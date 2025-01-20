@@ -11,19 +11,29 @@ public class Game {
     private JLabel statusLabel;
     private JLabel timerLabel;
     private JButton retryButton;
+    private JButton saveScoreButton;
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
     private boolean gameOver;
     private int remainingMines;
     private int remainingTime;
     private Timer timer;
+    private int rows, cols, difficulty;
 
     public Game(int rows, int cols, int difficulty) {
+        this.rows = rows;
+        this.cols = cols;
+        this.difficulty = difficulty;
+
         gameFrame = new JFrame("Minesweeper");
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameFrame.setLayout(new BorderLayout());
         gameFrame.setResizable(false);
-        //based on diff and board size calc the num of mines
+
         remainingMines = calculateMines(rows, cols, difficulty);
-        //depending on diff change the time
         remainingTime = getInitialTime(difficulty);
 
         topPanel = new JPanel(new BorderLayout());
@@ -39,12 +49,20 @@ public class Game {
         retryButton.setVisible(false);
         retryButton.addActionListener(this::onRetry);
 
+        saveScoreButton = new JButton("Save Score");
+        saveScoreButton.setVisible(false); // Initially hidden
+        saveScoreButton.addActionListener(this::onSaveScore);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        buttonPanel.add(retryButton);
+        buttonPanel.add(saveScoreButton);
+
         topPanel.add(timerLabel, BorderLayout.WEST);
         topPanel.add(statusLabel, BorderLayout.CENTER);
-        topPanel.add(retryButton, BorderLayout.EAST);
+        topPanel.add(buttonPanel, BorderLayout.EAST);
+
         gameFrame.add(topPanel, BorderLayout.NORTH);
 
-        //making the board based off the user choice and calculations
         board = new Board(rows, cols, calculateMines(rows, cols, difficulty), this);
         gameFrame.add(board.getBoardPanel(), BorderLayout.CENTER);
 
@@ -52,7 +70,7 @@ public class Game {
         gameFrame.setLocationRelativeTo(null);
         gameFrame.setVisible(true);
 
-        startTimer(); // Start the timer after the frame is visible
+        startTimer();
     }
 
     private void startTimer() {
@@ -61,7 +79,6 @@ public class Game {
                 timer.stop();
                 return;
             }
-
             remainingTime--;
             timerLabel.setText("Time Remaining: " + remainingTime + "s");
 
@@ -78,6 +95,12 @@ public class Game {
         board.revealMines();
         statusLabel.setText(won ? "You Win!" : "Game Over!");
         retryButton.setVisible(true);
+
+        if (won) {
+            saveScoreButton.setVisible(true);
+        } else {
+            saveScoreButton.setVisible(false);
+        }
     }
 
     private void gameOver(boolean won, String message) {
@@ -85,10 +108,32 @@ public class Game {
         board.revealMines();
         statusLabel.setText(message);
         retryButton.setVisible(true);
+        saveScoreButton.setVisible(false); // Always hidden if the player loses
     }
 
-    public boolean isGameOver() {
-        return gameOver;
+    private void onRetry(ActionEvent e) {
+        gameFrame.dispose();
+        new MainMenu();
+    }
+
+    private void onSaveScore(ActionEvent e) {
+        if (!gameOver || !saveScoreButton.isEnabled()) return;
+
+        String playerName = JOptionPane.showInputDialog(gameFrame, "Enter your name:", "Save Score", JOptionPane.PLAIN_MESSAGE);
+        if (playerName == null || playerName.trim().isEmpty()) return;
+
+        int score = calculateScore();
+        Leaderboard.saveScore(rows, cols, difficulty, playerName, score);
+        JOptionPane.showMessageDialog(gameFrame, "Score saved!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+        saveScoreButton.setEnabled(false); // Disable the button after saving
+    }
+
+
+    private int calculateScore() {
+        int baseScore = rows * cols;
+        int timeBonus = remainingTime * (difficulty + 1);
+        return baseScore + timeBonus;
     }
 
     private int calculateMines(int rows, int cols, int difficulty) {
@@ -96,16 +141,12 @@ public class Game {
         switch (difficulty) {
             case 2:
                 return baseMines * 2;
+//                return 2;
             case 3:
                 return baseMines * 3;
             default:
                 return baseMines;
         }
-    }
-
-    private void onRetry(ActionEvent e) {
-        gameFrame.dispose();
-        new MainMenu();
     }
 
     private int getInitialTime(int difficulty) {

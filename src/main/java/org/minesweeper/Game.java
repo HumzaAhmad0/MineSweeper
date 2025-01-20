@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 
 public class Game {
     private Board board;
-    private JFrame frame;
+    private JFrame gameFrame;
     private JPanel topPanel;
     private JLabel statusLabel;
     private JLabel timerLabel;
@@ -17,10 +17,10 @@ public class Game {
     private Timer timer;
 
     public Game(int rows, int cols, int difficulty) {
-        frame = new JFrame("Minesweeper");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new BorderLayout());
-        frame.setResizable(false);
+        gameFrame = new JFrame("Minesweeper");
+        gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        gameFrame.setLayout(new BorderLayout());
+        gameFrame.setResizable(false);
         //based on diff and board size calc the num of mines
         remainingMines = calculateMines(rows, cols, difficulty);
         //depending on diff change the time
@@ -42,15 +42,15 @@ public class Game {
         topPanel.add(timerLabel, BorderLayout.WEST);
         topPanel.add(statusLabel, BorderLayout.CENTER);
         topPanel.add(retryButton, BorderLayout.EAST);
-        frame.add(topPanel, BorderLayout.NORTH);
+        gameFrame.add(topPanel, BorderLayout.NORTH);
 
         //making the board based off the user choice and calculations
         board = new Board(rows, cols, calculateMines(rows, cols, difficulty), this);
-        frame.add(board.getBoardPanel(), BorderLayout.CENTER);
+        gameFrame.add(board.getBoardPanel(), BorderLayout.CENTER);
 
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        gameFrame.pack();
+        gameFrame.setLocationRelativeTo(null);
+        gameFrame.setVisible(true);
 
         startTimer(); // Start the timer after the frame is visible
     }
@@ -104,7 +104,7 @@ public class Game {
     }
 
     private void onRetry(ActionEvent e) {
-        frame.dispose();
+        gameFrame.dispose();
         new MainMenu();
     }
 
